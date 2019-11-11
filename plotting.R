@@ -14,7 +14,7 @@ print.RobotPart <- function(x,tabIndex = 0,runningID = 0,...){
     return(runningID)
 }
 
-plot.RobotPart <- function(robot, fitness = NULL, withDocks = T){
+plot.RobotPart <- function(robot, fitness = NULL, withDocks = F){
     longData <- robotToDF(robot)
     
     ## Add coordinates to plot dock points
@@ -23,11 +23,13 @@ plot.RobotPart <- function(robot, fitness = NULL, withDocks = T){
         getDockPoint <- function(df){
             x <- df[["x"]]
             y <- df[["y"]]
+            if(df[["dockPoint"]] == 0) y <- y - 0.15 ## No Dock Point
+            if(df[["dockPoint"]] == 0) x <- x + 0.15 ## No Dock Point
             if(df[["dockPoint"]] == 1) y <- y - 0.5
             if(df[["dockPoint"]] == 2) x <- x + 0.5
             if(df[["dockPoint"]] == 3) y <- y + 0.5
             if(df[["dockPoint"]] == 4) x <- x - 0.5
-            data.frame(dockX = x, dockY = y)
+            return(data.frame(dockX = x, dockY = y))
         }
         longData <- cbind(longData, dplyr::bind_rows(apply(longData,1,getDockPoint)))
     }
@@ -49,7 +51,7 @@ plot.RobotPart <- function(robot, fitness = NULL, withDocks = T){
         theme_bw() + 
         theme(axis.text.x=element_text(size=9, angle=0, vjust=0.3),
               axis.text.y=element_text(size=9),
-              plot.title=element_text(size=11)) 
+              plot.title=element_text(size=11))
     if(withDocks){
         p <- p + geom_point(aes(x = dockX, y = dockY))
     }

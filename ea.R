@@ -86,6 +86,7 @@ robotEA <- function(fun, budget, plotBestAfter = 0, popSize = 3){
     ## 
     p <- plot(pop[[1]]$robot,fitness = pop[[1]]$fit)
     print(p)
+    return(pop[[1]]$robot)
 }
 
 

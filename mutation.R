@@ -21,9 +21,7 @@ addChildAt <- function(robot, ind, count = 0){
 addChildRandom <- function(robot){
     partCount <- getPartCount(robot)
     chosenInd <- sample(1:partCount,1)
-    
     newRobot <- addChildAt(robot,chosenInd)$robot
-    
     if(isValid(newRobot)){
         return(newRobot)
     }else{
